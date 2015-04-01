@@ -21,15 +21,16 @@ public class Main {
     private static Environment environment() {
         final ImmutableMap<Class<? extends Monkey>, Integer> populationCount = ImmutableMap.of(
                 Sucker.class, 100,
-                Cheat.class, 0,
+                Cheat.class, 10,
                 Grudger.class, 100
         );
         final RandomPeriod lifetime = new RandomPeriod(Period.ofYears(10), Period.ofMonths(12));
         final RandomPeriod breeding = new RandomPeriod(Period.ofYears(4), Period.ofMonths(6));
         final RandomPeriod parasiteDeath = new RandomPeriod(Period.ofWeeks(4), Period.ofDays(2));
         final RandomPeriod parasiteInfection = new RandomPeriod(Period.ofDays(7), Period.ofDays(1));
+        final RandomPeriod dieEarlierDueToGrooming = new RandomPeriod(Period.ofWeeks(1), Period.ofDays(2));
         return new Environment(
-                populationCount, 0.01, lifetime, breeding, parasiteDeath, parasiteInfection, Period.ofYears(10_000), 10_000, 4);
+                populationCount, 0.02, lifetime, breeding, parasiteDeath, parasiteInfection, dieEarlierDueToGrooming, Period.ofYears(10_000), 10_000, 4);
     }
 
 }

@@ -1,8 +1,5 @@
 package com.nurkiewicz.monkeys.behaviours;
 
-import com.google.common.base.MoreObjects;
-import com.google.common.base.Objects;
-
 import java.time.Clock;
 import java.time.Duration;
 import java.time.Instant;
@@ -48,11 +45,13 @@ public abstract class Monkey {
         return getClass().getSimpleName() + "(" + this.hashCode() + ")";
     }
 
-    public void groomedBy(Monkey groomMe) {
+    public boolean groomedBy(Monkey groomMe) {
         if (groomMe.acceptsToGroom(this)) {
             hasParasite = false;
+            return true;
         } else {
             monkeyRejectedToGroomMe(groomMe);
+            return false;
         }
     }
 

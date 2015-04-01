@@ -1,9 +1,6 @@
 package com.nurkiewicz.monkeys.simulation;
 
 import com.google.common.collect.ImmutableMap;
-import com.nurkiewicz.monkeys.actions.AskForGrooming;
-import com.nurkiewicz.monkeys.actions.Breed;
-import com.nurkiewicz.monkeys.actions.Kill;
 import com.nurkiewicz.monkeys.actions.KillByParasite;
 import com.nurkiewicz.monkeys.behaviours.Monkey;
 import com.nurkiewicz.monkeys.behaviours.MonkeyFactory;
@@ -76,31 +73,16 @@ public class Population {
     private void newMonkey(Monkey child) {
         monkeys.add(child);
         scheduleBreedings(child);
-        scheduleDeath(child);
-        scheduleNextParasiteInfection(child);
+        planner.kill(child, environment.getLifetime().make(), this);
+        planner.askForGrooming(child, environment.getParasiteInfection().make(), this);
         log.debug("New monkey in population {}total {}", child, monkeys.size());
-    }
-
-    private void scheduleNextParasiteInfection(Monkey child) {
-        final Duration parasiteInfection = environment.getParasiteInfection().make();
-        planner.schedule(new AskForGrooming(child, parasiteInfection, this));
-    }
-
-    private void scheduleDeath(Monkey child) {
-        Duration lifetime = environment.getLifetime().make();
-        planner.schedule(new Kill(child, lifetime, this));
     }
 
     private void scheduleBreedings(Monkey child) {
         final int childrenCount = RANDOM.nextInt(environment.getMaxChildren() + 1);
         IntStream.
                 rangeClosed(1, childrenCount)
-                .forEach(x -> scheduleBreeding(child));
-    }
-
-    private void scheduleBreeding(Monkey child) {
-        final Duration breeding = environment.getBreeding().make();
-        planner.schedule(new Breed(child, breeding, this));
+                .forEach(x -> planner.breed(child, environment.getBreeding().make(), this));
     }
 
     private Optional<Monkey> findSuitablePartner(Monkey monkey) {
@@ -129,8 +111,18 @@ public class Population {
 
     public void askForGrooming(Monkey monkey) {
         killByParasite(monkey);
-        findMonkeyToGroomMe(monkey).ifPresent(m -> monkey.groomedBy(m));
-        scheduleNextParasiteInfection(monkey);
+        findMonkeyToGroomMe(monkey).ifPresent(m -> {
+            final boolean groomed = monkey.groomedBy(m);
+            if (groomed) {
+                dieEarlierDueToGrooming(m);
+            }
+        });
+        planner.askForGrooming(monkey, environment.getParasiteInfection().make(), this);
+    }
+
+    private void dieEarlierDueToGrooming(Monkey monkey) {
+        final Duration previousDeath = planner.cancelKill(monkey);
+        planner.kill(monkey, previousDeath.minus(environment.getDieEarlierDueToGrooming().make()), this);
     }
 
     private void killByParasite(Monkey monkey) {

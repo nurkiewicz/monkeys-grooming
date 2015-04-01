@@ -16,6 +16,7 @@ public class Environment {
     RandomPeriod breeding;
     RandomPeriod deathByParasite;
     RandomPeriod parasiteInfection;
+    RandomPeriod dieEarlierDueToGrooming;
     Period simulationLength;
     int maxPopulationSize;
     int maxChildren;

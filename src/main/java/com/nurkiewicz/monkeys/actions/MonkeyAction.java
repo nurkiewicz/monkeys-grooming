@@ -1,12 +1,9 @@
 package com.nurkiewicz.monkeys.actions;
 
 import com.google.common.base.MoreObjects;
-import com.google.common.base.Objects;
-import com.google.common.collect.ImmutableSet;
 import com.nurkiewicz.monkeys.behaviours.Monkey;
 
 import java.time.Duration;
-import java.util.Set;
 
 public abstract class MonkeyAction extends Action {
     private final Monkey monkey;
@@ -14,6 +11,10 @@ public abstract class MonkeyAction extends Action {
     public MonkeyAction(Monkey monkey, Duration delay) {
         super(monkey.getSimulationTime(), delay);
         this.monkey = monkey;
+    }
+
+    public Monkey getMonkey() {
+        return monkey;
     }
 
     @Override

@@ -1,8 +1,7 @@
 package com.nurkiewicz.monkeys.actions;
 
-import com.google.common.collect.ImmutableSet;
-import com.nurkiewicz.monkeys.simulation.Population;
 import com.nurkiewicz.monkeys.behaviours.Monkey;
+import com.nurkiewicz.monkeys.simulation.Population;
 
 import java.time.Duration;
 
