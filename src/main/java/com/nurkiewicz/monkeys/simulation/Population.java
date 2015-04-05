@@ -1,7 +1,6 @@
 package com.nurkiewicz.monkeys.simulation;
 
 import com.google.common.collect.ImmutableMap;
-import com.nurkiewicz.monkeys.actions.KillByParasite;
 import com.nurkiewicz.monkeys.behaviours.Monkey;
 import com.nurkiewicz.monkeys.behaviours.MonkeyFactory;
 import org.slf4j.Logger;
@@ -47,7 +46,7 @@ public class Population {
                 .mapToObj(x -> monkeyFactory.monkeyOfType(type));
     }
 
-    public void wantsToBread(Monkey monkey) {
+    public void breed(Monkey monkey) {
         findSuitablePartner(monkey)
                 .ifPresent(partner -> breed(partner, monkey));
     }
@@ -72,17 +71,8 @@ public class Population {
 
     private void newMonkey(Monkey child) {
         monkeys.add(child);
-        scheduleBreedings(child);
-        planner.kill(child, environment.getLifetime().make(), this);
-        planner.askForGrooming(child, environment.getParasiteInfection().make(), this);
+        planner.scheduleMonkeyLifecycle(child, this);
         log.debug("New monkey in population {}total {}", child, monkeys.size());
-    }
-
-    private void scheduleBreedings(Monkey child) {
-        final int childrenCount = RANDOM.nextInt(environment.getMaxChildren() + 1);
-        IntStream.
-                rangeClosed(1, childrenCount)
-                .forEach(x -> planner.breed(child, environment.getBreeding().make(), this));
     }
 
     private Optional<Monkey> findSuitablePartner(Monkey monkey) {
@@ -117,7 +107,7 @@ public class Population {
     }
 
     public void askForGrooming(Monkey monkey) {
-        killByParasite(monkey);
+        planner.killByParasite(monkey, this);
         findMonkeyToGroomMe(monkey).ifPresent(m -> {
             final boolean groomed = monkey.groomedBy(m);
             if (groomed) {
@@ -131,11 +121,6 @@ public class Population {
         if (RANDOM.nextDouble() < environment.getDieDueToGroomingProbability()) {
             planner.kill(monkey, Duration.ofMillis(0), this);
         }
-    }
-
-    private void killByParasite(Monkey monkey) {
-        final Duration parasiteDeathDelay = environment.getDeathByParasite().make();
-        planner.schedule(new KillByParasite(monkey, parasiteDeathDelay, this));
     }
 
     private Optional<Monkey> findMonkeyToGroomMe(Monkey monkey) {

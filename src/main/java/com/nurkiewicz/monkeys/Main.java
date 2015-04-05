@@ -13,7 +13,7 @@ public class Main {
         final SimulationClock clock = new SimulationClock();
         final Environment environment = environment();
         final MonkeyFactory monkeyFactory = new MonkeyFactory(clock, environment);
-        final Planner planner = new Planner(clock);
+        final Planner planner = new Planner(clock, environment);
         final Population population = new Population(planner, monkeyFactory, environment);
         final Simulation simulation = new Simulation(planner, clock, environment, population);
         simulation.run();

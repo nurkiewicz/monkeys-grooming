@@ -1,6 +1,5 @@
 package com.nurkiewicz.monkeys.actions;
 
-import com.google.common.collect.ImmutableSet;
 import com.nurkiewicz.monkeys.behaviours.Monkey;
 import com.nurkiewicz.monkeys.simulation.Population;
 
@@ -16,6 +15,6 @@ public class Breed extends MonkeyAction {
 
     @Override
     public void run(Monkey monkey) {
-        population.wantsToBread(monkey);
+        population.breed(monkey);
     }
 }
