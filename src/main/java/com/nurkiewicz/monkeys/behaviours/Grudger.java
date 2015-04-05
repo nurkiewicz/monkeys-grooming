@@ -1,14 +1,12 @@
 package com.nurkiewicz.monkeys.behaviours;
 
-import com.nurkiewicz.monkeys.behaviours.Monkey;
-
 import java.time.Clock;
 import java.util.HashSet;
 import java.util.Set;
 
 public class Grudger extends Monkey {
 
-    private final Set<Monkey> cheats = new HashSet<>();
+    private final Set<Monkey> cheaters = new HashSet<>();
 
     public Grudger(Clock simulationTime) {
         super(simulationTime);
@@ -16,12 +14,12 @@ public class Grudger extends Monkey {
 
     @Override
     public boolean acceptsToGroom(Monkey monkey) {
-        return !cheats.contains(monkey);
+        return !cheaters.contains(monkey);
     }
 
     @Override
     public void monkeyRejectedToGroomMe(Monkey monkey) {
-        cheats.add(monkey);
+        cheaters.add(monkey);
     }
 
 }
