@@ -1,7 +1,8 @@
 package com.nurkiewicz.monkeys.simulation;
 
-import java.time.*;
-import java.time.temporal.TemporalAmount;
+import java.time.Clock;
+import java.time.Instant;
+import java.time.ZoneId;
 
 public class SimulationClock extends Clock {
 
@@ -18,10 +19,6 @@ public class SimulationClock extends Clock {
     @Override
     public Instant instant() {
         return simulationNow;
-    }
-
-    public void advance(TemporalAmount amount) {
-        simulationNow = simulationNow.plus(amount);
     }
 
     public void advanceTo(Instant instant) {
