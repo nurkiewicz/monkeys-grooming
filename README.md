@@ -229,25 +229,25 @@ Just as with many event loops, there must be just one thread accessing events. W
 
 As a control group we start with a tiny (10 specimens) population consisting solely of suckers and a mixture of suckers and grudgers. In the absence of cheaters these two behaviors are indistinguishable. We turn off mutation (a possibility that a child of sucker and grudger will become a cheater, rather then sucker or grudger as well) and see how population grows (X axis represents time, Y axis is the population size):
 
-# IMAGE 2
+![Chart](src/main/docs/2.png)
 
 Notice that the proportion of suckers and grudgers fluctuates around 50% since these two behaviors are doing exactly the same. There is no point in running a simulation with few cheaters only. Since they generally don't groom each other, they quickly die, erasing the "*cheating gene*". On the other hand suckers only (without mutation) are growing exponentially (you can clearly see new generations being born after plateaus):
 
-# IMAGE 8
+![Chart](src/main/docs/8.png)
 
 However what would happen if we simulate a population with 100 suckers and just 5 cheaters? Mutations are again turned off to keep simulation clean:
 
-# IMAGE 5
+![Chart](src/main/docs/5.png)
 
 There are two possible scenarios: either cheaters gene disappears or it spreads and cause the population to extinct. It's kind of a paradox - if this particular gene wins, the whole population (including that gene!) is doomed. Now let's simulate something more interesting. We turn on 5% mutation probability and ask cheaters to groom in 9 out of 10 cases (so they behave somewhat like suckers). We start with a healthy population of 5 suckers and 5 grudgers:
 
-# IMAGE 6
+![Chart](src/main/docs/6.png)
 
 Do you see how grudgers quickly expand and almost always outnumber suckers? That's because suckers are much more vulnerable in an environment where cheaters sometimes appear due to a mutation. Did you noticed how population quickly shrinks every time even a small number of suckers appear? Grudgers are vulnerable as well: they groom newborn cheaters without knowing yet who they are. However they don't repeat this mistake like suckers do. That's why suckers always loose, but they don't extinct entirely since they are somewhat protected by grudgers. Not directly, but grudgers kill cheaters by not grooming them, reducing the threat. That's how different behaviors cooperate. So why did the population extinct after all? Look carefully at the end of the chart, at some point for a random reason the suckers outnumbered grudgers - this was especially possible in the absence of cheaters at that time. So what happened? A few cheaters appeared suddenly due to a mutation and this society of monkeys was doomed.
 
 Now let's study another example: a mature society of 100 suckers living already, no other behaviors observed. Of course due to a mutation grudgers and cheaters quickly emerge. Most of the times this simulation ends very quickly, just after few generations. The probability of cheater being born is the same as the probability of grudger, but we need way more grudgers to protect suckers. Thus the population dies. But I managed to run few simulations where such society actually survived for a while:
 
-# IMAGE 7
+![Chart](src/main/docs/7.png)
 
 Interestingly suckers dominated in the population for quite some time, but yet another *epidemic* attack of cheaters killed most of suckers. Unfortunately the last growth of cheaters reduced the number of grudgers to the point when they could no longer protect suckers and suddenly everyone dies.
 
