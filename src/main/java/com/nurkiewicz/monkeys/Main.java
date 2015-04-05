@@ -20,12 +20,12 @@ public class Main {
     }
 
     private static Environment environment() {
-                    return Environment.builder().
-                    initialCount(initialCount()).
-                    breeding(new RandomPeriod(Period.ofYears(4), Period.ofMonths(6))).
-                    lifetime(new RandomPeriod(Period.ofYears(10), Period.ofMonths(12))).
-                    cheaterAcceptProbability(0.5).
-                    deathByParasite(new RandomPeriod(Period.ofWeeks(4), Period.ofDays(2))).
+        return Environment.builder().
+                initialCount(initialCount()).
+                breeding(new RandomPeriod(Period.ofYears(4), Period.ofMonths(6))).
+                lifetime(new RandomPeriod(Period.ofYears(10), Period.ofMonths(12))).
+                cheaterAcceptProbability(0.5).
+                deathByParasite(new RandomPeriod(Period.ofWeeks(4), Period.ofDays(2))).
                 dieDueToGroomingProbability(0.001).
                 maxChildren(4).
                 maxPopulationSize(1_000).
@@ -37,10 +37,10 @@ public class Main {
 
     private static ImmutableMap<Class<? extends Monkey>, Integer> initialCount() {
         return ImmutableMap.of(
-                    Cheater.class, 0,
-                    Grudger.class, 5,
-                    Sucker.class, 5
-            );
+                Cheater.class, 0,
+                Grudger.class, 5,
+                Sucker.class, 5
+        );
     }
 
 }
