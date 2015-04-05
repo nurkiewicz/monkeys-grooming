@@ -1,6 +1,8 @@
 package com.nurkiewicz.monkeys.actions;
 
-import com.google.common.collect.ImmutableSet;
+import com.nurkiewicz.monkeys.behaviours.Cheater;
+import com.nurkiewicz.monkeys.behaviours.Grudger;
+import com.nurkiewicz.monkeys.behaviours.Sucker;
 import com.nurkiewicz.monkeys.simulation.Population;
 import com.nurkiewicz.monkeys.simulation.Statistics;
 import org.slf4j.Logger;
@@ -8,7 +10,6 @@ import org.slf4j.LoggerFactory;
 
 import java.time.Clock;
 import java.time.Duration;
-import java.util.Set;
 
 public class Probe extends Action {
 
@@ -23,6 +24,9 @@ public class Probe extends Action {
     @Override
     public void run() {
         final Statistics stats = population.statistics();
-        log.info("At {} population: {}", getSchedule(), stats);
+        final Integer suckers = stats.getPerType().getOrDefault(Sucker.class.getSimpleName(), 0);
+        final Integer grudgers = stats.getPerType().getOrDefault(Grudger.class.getSimpleName(), 0);
+        final Integer cheaters = stats.getPerType().getOrDefault(Cheater.class.getSimpleName(), 0);
+        System.out.println(cheaters + "\t" + grudgers + "\t" + suckers);
     }
 }
