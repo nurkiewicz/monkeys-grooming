@@ -1,1 +1,0 @@
-https://archive.org/stream/TheSelfishGene/RichardDawkins-TheSelfishGene_djvu.txt
