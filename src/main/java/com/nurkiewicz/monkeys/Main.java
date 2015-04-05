@@ -9,7 +9,7 @@ import java.time.Period;
 public class Main {
 
     public static void main(String[] args) {
-        System.out.println("Cheaters\tGrudgers\tSuckers");
+        System.out.println("Grudgers\tSuckers\tCheaters");
         final SimulationClock clock = new SimulationClock();
         final Environment environment = environment();
         final MonkeyFactory monkeyFactory = new MonkeyFactory(clock, environment);

@@ -24,9 +24,9 @@ public class Probe extends Action {
     @Override
     public void run() {
         final Statistics stats = population.statistics();
-        final Integer suckers = stats.getPerType().getOrDefault(Sucker.class.getSimpleName(), 0);
         final Integer grudgers = stats.getPerType().getOrDefault(Grudger.class.getSimpleName(), 0);
+        final Integer suckers = stats.getPerType().getOrDefault(Sucker.class.getSimpleName(), 0);
         final Integer cheaters = stats.getPerType().getOrDefault(Cheater.class.getSimpleName(), 0);
-        System.out.println(cheaters + "\t" + grudgers + "\t" + suckers);
+        System.out.println(grudgers + "\t" + suckers + "\t" + cheaters);
     }
 }
