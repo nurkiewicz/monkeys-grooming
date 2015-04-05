@@ -34,7 +34,7 @@ public class Population {
     }
 
     private void createInitialPopulation() {
-        environment.getBehaviourCount()
+        environment.getInitialCount()
                 .entrySet()
                 .stream()
                 .flatMap(entry -> manyMonkeysOfType(entry.getKey(), (int) entry.getValue()))
@@ -107,6 +107,13 @@ public class Population {
         monkeys.remove(monkey);
         monkey.kill();
         log.debug("Monkey {} died, left {}", monkey, monkeys.size());
+        stopIfPopulationDied();
+    }
+
+    private void stopIfPopulationDied() {
+        if (monkeys.isEmpty()) {
+            planner.stop();
+        }
     }
 
     public void askForGrooming(Monkey monkey) {
@@ -121,8 +128,9 @@ public class Population {
     }
 
     private void dieEarlierDueToGrooming(Monkey monkey) {
-        final Duration previousDeath = planner.cancelKill(monkey);
-        planner.kill(monkey, previousDeath.minus(environment.getDieEarlierDueToGrooming().make()), this);
+        if (RANDOM.nextDouble() < environment.getDieDueToGroomingProbability()) {
+            planner.kill(monkey, Duration.ofMillis(0), this);
+        }
     }
 
     private void killByParasite(Monkey monkey) {

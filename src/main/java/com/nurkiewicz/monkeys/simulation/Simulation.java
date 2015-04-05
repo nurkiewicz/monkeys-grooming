@@ -21,7 +21,7 @@ public class Simulation implements Runnable {
         final Duration simulationLength = Periods.toDuration(environment.getSimulationLength());
         final Stop action = new Stop(clock, simulationLength, this.planner);
         this.planner.schedule(action);
-        scheduleProbes(clock, population, simulationLength, 5_000);
+        scheduleProbes(clock, population, simulationLength, 20_000);
     }
 
     private void scheduleProbes(Clock clock, Population population, Duration simulationLength, int howMany) {

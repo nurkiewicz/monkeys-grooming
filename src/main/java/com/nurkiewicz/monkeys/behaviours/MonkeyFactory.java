@@ -2,9 +2,9 @@ package com.nurkiewicz.monkeys.behaviours;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.nurkiewicz.monkeys.simulation.Environment;
 
 import java.time.Clock;
-import java.time.Duration;
 import java.util.Random;
 import java.util.function.Supplier;
 
@@ -13,9 +13,11 @@ public class MonkeyFactory {
     private final Random random = new Random();
 
     private final Clock simulationTime;
+    private final Environment environment;
 
-    public MonkeyFactory(Clock simulationTime) {
+    public MonkeyFactory(Clock simulationTime, Environment environment) {
         this.simulationTime = simulationTime;
+        this.environment = environment;
     }
 
     public Monkey randomChild(Monkey m1, Monkey m2, double mutationProbability) {
@@ -43,7 +45,7 @@ public class MonkeyFactory {
     private ImmutableMap<Class<? extends Monkey>, Supplier<Monkey>> factories() {
         return ImmutableMap.of(
                 Sucker.class, () -> new Sucker(simulationTime),
-                Cheat.class, () -> new Cheat(simulationTime),
+                Cheater.class, () -> new Cheater(simulationTime, environment.getCheaterAcceptProbability()),
                 Grudger.class, () -> new Grudger(simulationTime)
         );
     }

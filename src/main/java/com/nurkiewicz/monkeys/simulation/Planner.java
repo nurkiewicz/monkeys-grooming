@@ -1,6 +1,9 @@
 package com.nurkiewicz.monkeys.simulation;
 
-import com.nurkiewicz.monkeys.actions.*;
+import com.nurkiewicz.monkeys.actions.Action;
+import com.nurkiewicz.monkeys.actions.AskForGrooming;
+import com.nurkiewicz.monkeys.actions.Breed;
+import com.nurkiewicz.monkeys.actions.Kill;
 import com.nurkiewicz.monkeys.behaviours.Monkey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,18 +50,6 @@ public class Planner implements Runnable {
     public void stop() {
         log.info("Stopping simulation");
         pending.clear();
-    }
-
-    public Duration cancelKill(Monkey monkey) {
-        final MonkeyAction killAction = pending
-                .stream()
-                .filter(action -> action instanceof Kill)
-                .map(action -> (MonkeyAction) action)
-                .filter(action -> action.getMonkey().equals(monkey))
-                .findAny()
-                .get();
-        pending.remove(killAction);
-        return Duration.between(simulationClock.instant(), killAction.getSchedule());
     }
 
     void kill(Monkey child, Duration lifetime, Population population) {
