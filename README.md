@@ -30,7 +30,7 @@ So I hacked few classes to perform a simulation of cheaters, suckers and grudger
 2. Entirely single-threaded
 3. Logical clock that is advanced explicitly to simulate time elapsing
 
-We are going to simulate a population of monkeys (from just few to millions), each one with independent behavior, random life time and so on. It seems obvious to use multi-agent solution like actors or at least threads. However [*Principles of Reactive Programming*](https://www.coursera.org/course/reactive) course taught me that this is often an over-engineering. Essentially such a simulation is a sequence of events that should happen in the future: a monkey should be born in 2 years, should breed in 5 years and should die in 10. Of course there are many more such events and more monkeys. However it's enough to throw all these events into a single priority queue where closest events in the future are first. That's how `Planner` is essentially implemented:
+We are going to simulate a population of monkeys (from just few to millions), each one with independent behavior, random life time and so on. It seems obvious to use multi-agent solution like actors or at least threads. However [*Principles of Reactive Programming*](https://www.coursera.org/course/reactive) course taught me that this is often an over-engineering. Essentially such a simulation is a sequence of events that should happen in the future: a monkey should be born in 2 years, should breed in 5 years and should die in 10. Of course there are many more such events and more monkeys. However it's enough to throw all these events into a single priority queue where closest events in the future are first. That's how [`Planner`](https://github.com/nurkiewicz/monkeys-grooming/blob/master/src/main/java/com/nurkiewicz/monkeys/simulation/Planner.java) is essentially implemented:
 
 	public abstract class Action implements Comparable<Action> {
 	
@@ -70,7 +70,7 @@ We are going to simulate a population of monkeys (from just few to millions), ea
 	    }
 	}
 
-We have an `Action` with predefined `schedule` (*when* it should be executed) and a `pending` queue of future actions. There is no need to wait, we just pick nearest action from the future and advance simulation time:
+We have an [`Action`](https://github.com/nurkiewicz/monkeys-grooming/blob/master/src/main/java/com/nurkiewicz/monkeys/actions/Action.java) with predefined `schedule` (*when* it should be executed) and a `pending` queue of future actions. There is no need to wait, we just pick nearest action from the future and advance simulation time:
 
 	import java.time.Clock;
 
@@ -183,7 +183,7 @@ For each new monkey we schedule its so-called lifecycle, i.e. events related to 
         schedule(new Breed(child, breeding, population));
     }
 
-[`AskForGrooming`](https://github.com/nurkiewicz/monkeys-grooming/blob/master/src/main/java/com/nurkiewicz/monkeys/actions/AskForGrooming.java), `Kill`, `Breed`, etc. are instances of already mentioned `Action` class, e.g. `Kill`:
+[`AskForGrooming`](https://github.com/nurkiewicz/monkeys-grooming/blob/master/src/main/java/com/nurkiewicz/monkeys/actions/AskForGrooming.java), [`Kill`](https://github.com/nurkiewicz/monkeys-grooming/blob/master/src/main/java/com/nurkiewicz/monkeys/actions/Kill.java), [`Breed`](https://github.com/nurkiewicz/monkeys-grooming/blob/master/src/main/java/com/nurkiewicz/monkeys/actions/Breed.java), etc. are instances of already mentioned `Action` class, e.g. `Kill`:
 
 	public class Kill extends MonkeyAction {
 	    private final Population population;
@@ -219,7 +219,7 @@ I encapsulate all simulation parameters in a simple value class [`Environment`](
 
 	}
 
-This allowed me to capture the concept of random period of time with expected value, standard deviation and [normal distribution](http://en.wikipedia.org/wiki/Normal_distribution). `make()` method simply generates one such random period. I am not going to explore full source code of this simulation, it's [available on GitHub](https://github.com/nurkiewicz/monkeys-grooming). Now it's finally time to run it a few times and observe how population grows (or extincts). By the way I use the same planner and action mechanism to peek what happens: I simply inject `Probe` action once every year (logical time!) and output the current population size.
+This allowed me to capture the concept of random period of time with expected value, standard deviation and [normal distribution](http://en.wikipedia.org/wiki/Normal_distribution). `make()` method simply generates one such random period. I am not going to explore full source code of this simulation, it's [available on GitHub](https://github.com/nurkiewicz/monkeys-grooming). Now it's finally time to run it a few times and observe how population grows (or extincts). By the way I use the same planner and action mechanism to peek what happens: I simply inject [`Probe`](https://github.com/nurkiewicz/monkeys-grooming/blob/master/src/main/java/com/nurkiewicz/monkeys/actions/Probe.java) action once every year (logical time!) and output the current population size.
 
 Just as with many event loops, there must be just one thread accessing events. We followed this practice, the simulation is single-threaded, thus there is no need to perform any synchronization or locking at all, we can also use standard, unsafe but faster collections. Less context switches and improved cache locality help as well. Also we can easily dump simulation state to disk, e.g. to restore it later. Of course there are drawbacks. With thousands of monkeys the simulation slows down and there is not much we can do about it, except careful optimization and buying faster CPU (not even more CPUs!)
 
