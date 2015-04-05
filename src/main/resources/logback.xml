@@ -1,6 +1,6 @@
 <configuration>
 
-    <root level="info">
+    <root level="warn">
         <appender class="ch.qos.logback.core.ConsoleAppender">
             <encoder>
                 <pattern>%d{HH:mm:ss.SSS} | %-5level | %logger{20} | %msg%n</pattern>
