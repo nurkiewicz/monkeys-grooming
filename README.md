@@ -3,7 +3,9 @@
 TL;DR: I did a computer simulation of behavior evolution of monkeys, continue reading to see how problem was stated originally in [The Selfish Gene](http://www.amazon.com/gp/product/0199291152/ref=as_li_tl?ie=UTF8&camp=1789&creative=390957&creativeASIN=0199291152&linkCode=as2&tag=javaandneighb-20&linkId=7SNF47P7MX5LWBNF). First part shows my [Java implementation](https://github.com/nurkiewicz/monkeys-grooming), second part shows charted results and conclusions.
 
 
-![From Wikimedia Commons](src/main/docs/monkeys.jpg)
+![Monkeys social grooming](src/main/docs/monkeys.jpg)
+
+From [Wikimedia Commons](http://commons.wikimedia.org/wiki/Category:Social_grooming)
 
 ---
 
